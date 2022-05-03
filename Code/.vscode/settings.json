@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "pwm.h": "c",
+        "stm32f10x.h": "c",
+        "gpio.h": "c",
+        "stdbool.h": "c"
+    }
+}
