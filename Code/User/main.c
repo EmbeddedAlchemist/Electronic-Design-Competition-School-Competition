@@ -7,20 +7,23 @@
 
 #include "STM32F10x_ExternLib.h"
 
-void setup(){
-    //initial...
-    
-    
-}
+#include "STM32F10x_ExternLib_42StepperMotor.h"
 
-void loop(){
-    //loop...
-    
-}
+StepperMotor42Group_Object motorGroup;
+StepperMotor42_Object motor;
+
 
 int main(){
-    setup();
+    STM32F10x_ExternLib_Initialize();
+    motorGroup = StepperMotor42_InitializeGroup(TIM_GenerateUninitialize(TIM2, TIM2_IRQn));
+    motor = StepperMotor42_Initialize(GPIO_GenerateUninitialize(GPIOC, GPIO_Pin_3),
+                                      GPIO_GenerateUninitialize(GPIOC, GPIO_Pin_0),
+                                      GPIO_GenerateUninitialize(GPIOC, GPIO_Pin_1),
+                                      GPIO_GenerateUninitialize(GPIOC, GPIO_Pin_2),
+                                      1.8f,
+                                      0);
+    StepperMotor42_AddToGroup(motorGroup, motor);
+    StepperMotor42_RotateCycle(motor, RotateDirection_Clockwise, 1.0f);
     for(;;){
-        loop();
     }
 }

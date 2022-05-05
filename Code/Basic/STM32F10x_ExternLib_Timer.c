@@ -1,4 +1,3 @@
-#define STM32F10X_HD
 #include "STM32F10x_ExternLib_Timer.h"
 
 static TIM_Object TIM1Periph, TIM2Periph, TIM3Periph, TIM4Periph, TIM5Periph,
@@ -16,28 +15,28 @@ void TIM_Deinitialize(TIM_Object TIM_Periph) {
         return;
     }
     switch ((intptr_t)TIM_Periph->TIMx) {
-        case TIM1:
-        case TIM2:
-        case TIM3:
-        case TIM4:
-        case TIM5:
-        case TIM6:
-        case TIM7:
-        case TIM8:
-        case TIM9:
-        case TIM10:
-        case TIM11:
-        case TIM12:
-        case TIM13:
-        case TIM14:
-        case TIM15:
-        case TIM16:
-        case TIM17: {
+        case (intptr_t)TIM1:
+        case (intptr_t)TIM2:
+        case (intptr_t)TIM3:
+        case (intptr_t)TIM4:
+        case (intptr_t)TIM5:
+        case (intptr_t)TIM6:
+        case (intptr_t)TIM7:
+        case (intptr_t)TIM8:
+        case (intptr_t)TIM9:
+        case (intptr_t)TIM10:
+        case (intptr_t)TIM11:
+        case (intptr_t)TIM12:
+        case(intptr_t)TIM13:
+        case (intptr_t)TIM14:
+        case (intptr_t)TIM15:
+        case (intptr_t)TIM16:
+        case (intptr_t)TIM17: {
             TIM_DeInit(TIM_Periph->TIMx);
         } break;
         default: {
             return;
-        } break;
+        }
     }
     MeM_Release((void *)TIM_Periph);
 }
@@ -56,82 +55,82 @@ void TIM_Deinitialize(TIM_Object TIM_Periph) {
 TIM_Object TIM_InitializeAdvance(TIM_TypeDef *TIMx, uint16_t period, uint16_t prescaler, void (*interruptUpdateCallback)(GenericObject), GenericObject interruptUpdateCallbackParam, uint8_t IRQnChannel, uint8_t preemptionPriority, uint8_t subPriority) {
     TIM_Object *selectedTIM;
     switch ((intptr_t)TIMx) {
-        case TIM1: {
+        case (intptr_t)TIM1: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
             selectedTIM = &TIM1Periph;
         } break;
-        case TIM2: {
+        case (intptr_t)TIM2: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
             selectedTIM = &TIM2Periph;
         } break;
-        case TIM3: {
+        case (intptr_t)TIM3: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
             selectedTIM = &TIM3Periph;
         } break;
-        case TIM4: {
+        case (intptr_t)TIM4: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
             selectedTIM = &TIM4Periph;
         } break;
-        case TIM5: {
+        case (intptr_t)TIM5: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
             selectedTIM = &TIM5Periph;
         } break;
-        case TIM6: {
+        case (intptr_t)TIM6: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
             selectedTIM = &TIM6Periph;
         } break;
-        case TIM7: {
+        case (intptr_t)TIM7: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
             selectedTIM = &TIM7Periph;
         } break;
-        case TIM8: {
+        case (intptr_t)TIM8: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);
             selectedTIM = &TIM8Periph;
         } break;
-        case TIM9: {
+        case (intptr_t)TIM9: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9, ENABLE);
             selectedTIM = &TIM9Periph;
         } break;
-        case TIM10: {
+        case (intptr_t)TIM10: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM10, ENABLE);
             selectedTIM = &TIM10Periph;
         } break;
-        case TIM11: {
+        case (intptr_t)TIM11: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM11, ENABLE);
             selectedTIM = &TIM11Periph;
         }
-        case TIM12: {
+        case (intptr_t)TIM12: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM12, ENABLE);
             selectedTIM = &TIM12Periph;
         } break;
-        case TIM13: {
+        case (intptr_t)TIM13: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM13, ENABLE);
             selectedTIM = &TIM13Periph;
         } break;
-        case TIM14: {
+        case (intptr_t)TIM14: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM14, ENABLE);
             selectedTIM = &TIM14Periph;
         } break;
-        case TIM15: {
+        case (intptr_t)TIM15: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM15, ENABLE);
             selectedTIM = &TIM15Periph;
         } break;
-        case TIM16: {
+        case (intptr_t)TIM16: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM16, ENABLE);
             selectedTIM = &TIM16Periph;
         } break;
-        case TIM17: {
+        case (intptr_t)TIM17: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM17, ENABLE);
             selectedTIM = &TIM17Periph;
         } break;
         default: {
             return NULL;
-        } break;
+        }
     }
 
     TIM_DeInit(TIMx);                  //先复位
-    if (selectedTIM) {                 //之前被初始化过
-        TIM_Deinitialize(selectedTIM); //清除之前的初始化
+    if (*selectedTIM) {                 //之前被初始化过
+        TIM_Deinitialize(*selectedTIM); //清除之前的初始化
     }
     *selectedTIM = (TIM_Object)MeM_Request(sizeof(struct TIM_PeriphTypeDef)); //创建新对象
     if (!*selectedTIM) {                                                        //创建失败
@@ -210,82 +209,82 @@ TIM_Object TIM_GenerateUninitialize(TIM_TypeDef *TIMx,uint8_t IRQn_Channel){
 void TIM_InitializeAdvanceObject(TIM_Object TIM_Periph, uint16_t period, uint16_t prescaler, void (*interruptUpdateCallback)(GenericObject), GenericObject interruptUpdateCallbackParam, uint8_t preemptionPriority, uint8_t subPriority){
     TIM_Object *selectedTIM;
     switch ((intptr_t)TIM_Periph->TIMx) {
-        case TIM1: {
+        case (intptr_t)TIM1: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
             selectedTIM = &TIM1Periph;
         } break;
-        case TIM2: {
+        case (intptr_t)TIM2: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
             selectedTIM = &TIM2Periph;
         } break;
-        case TIM3: {
+        case (intptr_t)TIM3: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
             selectedTIM = &TIM3Periph;
         } break;
-        case TIM4: {
+        case (intptr_t)TIM4: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
             selectedTIM = &TIM4Periph;
         } break;
-        case TIM5: {
+        case (intptr_t)TIM5: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
             selectedTIM = &TIM5Periph;
         } break;
-        case TIM6: {
+        case (intptr_t)TIM6: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
             selectedTIM = &TIM6Periph;
         } break;
-        case TIM7: {
+        case (intptr_t)TIM7: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
             selectedTIM = &TIM7Periph;
         } break;
-        case TIM8: {
+        case (intptr_t)TIM8: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);
             selectedTIM = &TIM8Periph;
         } break;
-        case TIM9: {
+        case (intptr_t)TIM9: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM9, ENABLE);
             selectedTIM = &TIM9Periph;
         } break;
-        case TIM10: {
+        case (intptr_t)TIM10: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM10, ENABLE);
             selectedTIM = &TIM10Periph;
         } break;
-        case TIM11: {
+        case (intptr_t)TIM11: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM11, ENABLE);
             selectedTIM = &TIM11Periph;
         }
-        case TIM12: {
+        case (intptr_t)TIM12: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM12, ENABLE);
             selectedTIM = &TIM12Periph;
         } break;
-        case TIM13: {
+        case (intptr_t)TIM13: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM13, ENABLE);
             selectedTIM = &TIM13Periph;
         } break;
-        case TIM14: {
+        case (intptr_t)TIM14: {
             RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM14, ENABLE);
             selectedTIM = &TIM14Periph;
         } break;
-        case TIM15: {
+        case (intptr_t)TIM15: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM15, ENABLE);
             selectedTIM = &TIM15Periph;
         } break;
-        case TIM16: {
+        case (intptr_t)TIM16: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM16, ENABLE);
             selectedTIM = &TIM16Periph;
         } break;
-        case TIM17: {
+        case (intptr_t)TIM17: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM17, ENABLE);
             selectedTIM = &TIM17Periph;
         } break;
         default: {
-            return NULL;
-        } break;
+            return;
+        }
     }
 
     TIM_DeInit(TIM_Periph->TIMx);                  //先复位
     if (*selectedTIM) {                 //之前被初始化过
-        TIM_Deinitialize(selectedTIM); //清除之前的初始化
+        TIM_Deinitialize(*selectedTIM); //清除之前的初始化
     }
 
     (*selectedTIM) = TIM_Periph;
@@ -328,7 +327,7 @@ void TIM_InitializeAdvanceObject(TIM_Object TIM_Periph, uint16_t period, uint16_
  */
 void TIM_InitializeObject(TIM_Object TIM_Periph, unsigned int interval, void (*interruptUpdateCallback)(GenericObject), GenericObject interruptUpdateCallbackParam, uint8_t preemptionPriority, uint8_t subPriority){
     SystemCoreClockUpdate();
-    TIM_InitializeObjectAdvance(TIM_Periph, TIM_PERIOD_DEFAULT, (SystemCoreClock / 1000000) * interval / TIM_PERIOD_DEFAULT, interruptUpdateCallback, interruptUpdateCallbackParam, preemptionPriority, subPriority);
+    TIM_InitializeAdvanceObject(TIM_Periph, TIM_PERIOD_DEFAULT, (SystemCoreClock / 1000000) * interval / TIM_PERIOD_DEFAULT, interruptUpdateCallback, interruptUpdateCallbackParam, preemptionPriority, subPriority);
 }
 
 /**

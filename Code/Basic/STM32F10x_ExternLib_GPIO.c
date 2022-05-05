@@ -12,30 +12,30 @@
  */
 GPIO_Object GPIO_Initialize(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin_x, GPIOMode_TypeDef GPIO_Mode, GPIOSpeed_TypeDef GPIO_Speed) {
     switch ((intptr_t)GPIOx) {
-        case GPIOA: {
+        case (intptr_t)GPIOA: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
         } break;
-        case GPIOB: {
+        case (intptr_t)GPIOB: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
         } break;
-        case GPIOC: {
+        case (intptr_t)GPIOC: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
         } break;
-        case GPIOD: {
+        case (intptr_t)GPIOD: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
         } break;
-        case GPIOE: {
+        case (intptr_t)GPIOE: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
         } break;
-        case GPIOF: {
+        case (intptr_t)GPIOF: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOF, ENABLE);
         } break;
-        case GPIOG: {
+        case (intptr_t)GPIOG: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOG, ENABLE);
         } break;
         default:{//混入了奇怪的东西
-            return NULL;
-        }break;
+            return EmptyObject;
+        }
     }
     switch(GPIO_Pin_x){//有效性验证
         case GPIO_Pin_0:
@@ -57,11 +57,11 @@ GPIO_Object GPIO_Initialize(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin_x, GPIOMode_T
             break;
         }
         default:{
-            return NULL;
+            return EmptyObject;
         }
     }
 
-    if(GPIO_Mode==GPIO_Mode_AF_OD||GPIO_Mode_AF_PP){//如果为复用开漏或推挽，就顺便打开复用时钟
+    if(GPIO_Mode==GPIO_Mode_AF_OD||GPIO_Mode==GPIO_Mode_AF_PP){//如果为复用开漏或推挽，就顺便打开复用时钟
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
     }
 
@@ -90,18 +90,18 @@ GPIO_Object GPIO_Initialize(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin_x, GPIOMode_T
  */
 GPIO_Object GPIO_GenerateUninitialize(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin_x){
         switch ((intptr_t)GPIOx) {//有效性验证
-        case GPIOA:
-        case GPIOB:
-        case GPIOC:
-        case GPIOD:
-        case GPIOE:
-        case GPIOF:
-        case GPIOG: {
+        case (intptr_t)GPIOA:
+        case (intptr_t)GPIOB:
+        case (intptr_t)GPIOC:
+        case (intptr_t)GPIOD:
+        case (intptr_t)GPIOE:
+        case (intptr_t)GPIOF:
+        case (intptr_t)GPIOG: {
             break;
         }
         default:{//混入了奇怪的东西
             return NULL;
-        }break;
+        }
     }
     switch(GPIO_Pin_x){//有效性验证
         case GPIO_Pin_0:
@@ -123,12 +123,12 @@ GPIO_Object GPIO_GenerateUninitialize(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin_x){
             break;
         }
         default:{
-            return NULL;
+            return EmptyObject;
         }
     }
     GPIO_Object newGPIOPeriph = (GPIO_Object)MeM_Request(sizeof(struct GPIO_PeriphTypeDef));
     if(!newGPIOPeriph){//创建对象失败
-        return NULL;
+        return EmptyObject;
     }
     newGPIOPeriph->GPIO_Pin_x = GPIO_Pin_x;
     newGPIOPeriph->GPIOx = GPIOx;
@@ -144,30 +144,30 @@ GPIO_Object GPIO_GenerateUninitialize(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin_x){
  */
 void GPIO_InitializeObject(GPIO_Object GPIO_Periph, GPIOMode_TypeDef GPIO_Mode, GPIOSpeed_TypeDef GPIO_Speed){
     switch ((intptr_t)GPIO_Periph->GPIOx) {
-        case GPIOA: {
+        case (intptr_t)GPIOA: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
         } break;
-        case GPIOB: {
+        case (intptr_t)GPIOB: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
         } break;
-        case GPIOC: {
+        case (intptr_t)GPIOC: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
         } break;
-        case GPIOD: {
+        case (intptr_t)GPIOD: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
         } break;
-        case GPIOE: {
+        case (intptr_t)GPIOE: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOE, ENABLE);
         } break;
-        case GPIOF: {
+        case (intptr_t)GPIOF: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOF, ENABLE);
         } break;
-        case GPIOG: {
+        case (intptr_t)GPIOG: {
             RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOG, ENABLE);
         } break;
         default:{//混入了奇怪的东西
-            return NULL;
-        }break;
+            return;
+        }
     }
     switch(GPIO_Periph->GPIO_Pin_x){//有效性验证
         case GPIO_Pin_0:
@@ -193,7 +193,7 @@ void GPIO_InitializeObject(GPIO_Object GPIO_Periph, GPIOMode_TypeDef GPIO_Mode, 
         }
     }
 
-    if(GPIO_Mode==GPIO_Mode_AF_OD||GPIO_Mode_AF_PP){//如果为复用开漏或推挽，就顺便打开复用时钟
+    if(GPIO_Mode==GPIO_Mode_AF_OD||GPIO_Mode==GPIO_Mode_AF_PP){//如果为复用开漏或推挽，就顺便打开复用时钟
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
     }
 

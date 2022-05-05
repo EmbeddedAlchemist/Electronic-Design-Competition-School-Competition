@@ -1,5 +1,18 @@
 #include "STM32F10x_ExternLib_42StepperMotor.h"
 
+void StepperMotor42_StepHandler(GenericObject object);
+
+/**
+ * @brief 初始化并生成一个步进电机对象
+ * 
+ * @param GPIO_APositive A+对应的GPIO
+ * @param GPIO_ANegative A-对应的GPIO
+ * @param GPIO_BPositive B+对应的GPIO
+ * @param GPIO_BNagitive B-对应的GPIO
+ * @param stepAngle 步进角
+ * @param easing 是否缓动
+ * @return StepperMotor42_Object 
+ */
 StepperMotor42_Object StepperMotor42_Initialize(GPIO_Object GPIO_APositive,
                                                 GPIO_Object GPIO_ANegative,
                                                 GPIO_Object GPIO_BPositive,
@@ -16,16 +29,22 @@ StepperMotor42_Object StepperMotor42_Initialize(GPIO_Object GPIO_APositive,
     newStepperMotor42Object->stepAngle = (uint32_t)(stepAngle / 2 * 100);
     newStepperMotor42Object->easingStep = easing;
     newStepperMotor42Object->next = EmptyObject;
+    newStepperMotor42Object->GPIO_APositive = GPIO_APositive;
+    newStepperMotor42Object->GPIO_ANegative = GPIO_ANegative;
+    newStepperMotor42Object->GPIO_BPositive = GPIO_BPositive;
+    newStepperMotor42Object->GPIO_BNegative = GPIO_BNagitive;
+    return newStepperMotor42Object;
 }
 
 StepperMotor42Group_Object StepperMotor42_InitializeGroup(TIM_Object timer) {
     StepperMotor42Group_Object newStepperMotor42GroupObject = (StepperMotor42Group_Object)MeM_Request(sizeof(struct StepperMotor42Group_typeDef));
-    TIM_InitializeObject(timer, 1000, StepperMotor42_StepHandler, (GenericObject)newStepperMotor42GroupObject, 0, 0);
+    TIM_InitializeObject(timer, 10000, StepperMotor42_StepHandler, (GenericObject)newStepperMotor42GroupObject, 0, 0);
     newStepperMotor42GroupObject->object = EmptyObject;
+    return newStepperMotor42GroupObject;
 }
 
 
-void StepperMotor32_AddToGroup(StepperMotor42Group_Object group,StepperMotor42_Object motor){
+void StepperMotor42_AddToGroup(StepperMotor42Group_Object group,StepperMotor42_Object motor){
     motor->next = EmptyObject;
     if(group->object==EmptyObject){
         group->object = motor;
@@ -33,7 +52,7 @@ void StepperMotor32_AddToGroup(StepperMotor42Group_Object group,StepperMotor42_O
     }
     StepperMotor42_Object obj = group->object;
     while(obj->next!=EmptyObject){
-        obj = obj = obj->next;
+        obj = obj->next;
     }
     obj->next = motor;
 }
@@ -61,6 +80,13 @@ void StepperMotor42_RotateStep(StepperMotor42_Object motorObj,RotateDirectionTyp
  * @param angle 角度
  */
 void StepperMotor42_RotateAngle(StepperMotor42_Object motorObj,RotateDirectionTypeDef direction,float angle){
+    if (angle < 0) {
+        angle = -angle;
+        if (direction == RotateDirection_Clockwise)
+            direction = RotateDirection_Counterclockwise;
+        else
+            direction = RotateDirection_Clockwise;
+    }
     uint32_t step = (uint32_t)(angle * 100) / motorObj->stepAngle;
     StepperMotor42_RotateStep(motorObj, direction, step);
 }
@@ -74,6 +100,13 @@ void StepperMotor42_RotateAngle(StepperMotor42_Object motorObj,RotateDirectionTy
  * @param cycle 圈数
  */
 void StepperMotor42_RotateCycle(StepperMotor42_Object motorObj,RotateDirectionTypeDef direction,float cycle){
+    if (cycle < 0) {
+        cycle = -cycle;
+        if (direction == RotateDirection_Clockwise)
+            direction = RotateDirection_Counterclockwise;
+        else
+            direction = RotateDirection_Clockwise;
+    }
     uint32_t angle;
     angle = (uint32_t)(cycle * 100) * 360;
     StepperMotor42_RotateStep(motorObj, direction, angle / motorObj->stepAngle);
@@ -210,8 +243,12 @@ void StepperMotor42_StepHandler(GenericObject object) {
             }
             if (MotorObject->direction == RotateDirection_Clockwise) {
                 MotorObject->step++;
+                if(MotorObject->step==8)
+                    MotorObject->step = 0;
             } else if (MotorObject->direction == RotateDirection_Counterclockwise) {
                 MotorObject->step--;
+                if(MotorObject->step==-1)
+                    MotorObject->step = 7;
             }
             MotorObject->curStep++;
             if (MotorObject->curStep == MotorObject->totalStep) { //转完了指定步数

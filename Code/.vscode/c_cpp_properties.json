@@ -3,19 +3,19 @@
         {
             "name": "Target 1",
             "includePath": [
-                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\电赛\\Code\\CMSIS",
-                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\电赛\\Code\\Library\\inc",
-                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\电赛\\Code\\Startup",
-                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\电赛\\Code\\User",
-                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\电赛\\Code\\Hardware",
-                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\电赛\\Code\\Basic",
+                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\Electronic-Design-Competition-School-Competition\\Code\\CMSIS",
+                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\Electronic-Design-Competition-School-Competition\\Code\\Library\\inc",
+                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\Electronic-Design-Competition-School-Competition\\Code\\Startup",
+                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\Electronic-Design-Competition-School-Competition\\Code\\User",
+                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\Electronic-Design-Competition-School-Competition\\Code\\Hardware",
+                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\Electronic-Design-Competition-School-Competition\\Code\\Basic",
                 "C:\\Keil_v5\\ARM\\ARMCC\\include",
                 "C:\\Keil_v5\\ARM\\ARMCC\\include\\rw",
-                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\电赛\\Code\\Library\\src"
+                "c:\\Users\\CHALLENGER\\Documents\\KeXieData\\Project\\Electronic-Design-Competition-School-Competition\\Code\\Library\\src"
             ],
             "defines": [
                 "USE_STDPERIPH_DRIVER",
-                "STM32F10X_MD",
+                "STM32F10X_HD",
                 "__CC_ARM",
                 "__arm__",
                 "__align(x)=",

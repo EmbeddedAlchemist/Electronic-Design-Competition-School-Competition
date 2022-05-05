@@ -47,11 +47,11 @@ typedef struct USART_PeriphTypedef{
 } *USART_Object;
 
 
-USART_Object USART_Initialize(USART_Typedef *USARTx, uint32_t BaudRate, uint16_t WordLength, uint16_t Parity, uint16_t StopBit, uint8_t ITPreemptionPriority, uint8_t ITSubPriority);
+USART_Object USART_Initialize(USART_TypeDef *USARTx, uint32_t BaudRate, uint16_t WordLength, uint16_t Parity, uint16_t StopBit, uint8_t ITPreemptionPriority, uint8_t ITSubPriority);
 void USART_Write(USART_Object USARTPeriph, uint8_t dat);
 uint8_t USART_Read(USART_Object USARTPeriph);
-bool USART_DataAvaliable(USART_ObjectUSARTPeriph);
-void USART_WriteStr(USART_ObjectUSARTPeriph, const char *str);
+bool USART_DataAvaliable(USART_Object USARTPeriph);
+void USART_WriteStr(USART_Object USARTPeriph, const char *str);
 
 
 #endif

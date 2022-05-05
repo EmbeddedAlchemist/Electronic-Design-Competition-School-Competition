@@ -11,7 +11,7 @@
  * @param GPIO_Periph 通道对应的未初始化过的GPIO对象，当然初始化过的也可以，不过会再初始化一遍
  * @return PWM_TypeDef* 初始化完成的PWM对象
  */
-PWM_ObjectPWM_Initialize(TIM_Object TIM_Periph, uint8_t TIM_Channel_x,GPIO_Object GPIO_Periph){
+PWM_Object PWM_Initialize(TIM_Object TIM_Periph, uint8_t TIM_Channel_x,GPIO_Object GPIO_Periph){
     void (*TIM_OCxInit)(TIM_TypeDef *, TIM_OCInitTypeDef *);
     void (*TIM_OCxPreloadConfig)(TIM_TypeDef *, uint16_t);
     TIM_Cmd(TIM_Periph->TIMx, DISABLE);
@@ -33,8 +33,8 @@ PWM_ObjectPWM_Initialize(TIM_Object TIM_Periph, uint8_t TIM_Channel_x,GPIO_Objec
             TIM_OCxPreloadConfig = TIM_OC4PreloadConfig;
         } break;
         default:{
-            return NULL;
-        }break;
+            return EmptyObject;
+        }
     }
     GPIO_InitializeObject(GPIO_Periph, GPIO_Mode_AF_PP, GPIO_Speed_50MHz);
     TIM_OCInitTypeDef TIM_OCInitData;
@@ -45,6 +45,10 @@ PWM_ObjectPWM_Initialize(TIM_Object TIM_Periph, uint8_t TIM_Channel_x,GPIO_Objec
     TIM_OCxInit(TIM_Periph->TIMx, &TIM_OCInitData);
     TIM_OCxPreloadConfig(TIM_Periph->TIMx, TIM_OCPreload_Enable);
     TIM_Cmd(TIM_Periph->TIMx, ENABLE);
+    PWM_Object newPWMObj = (PWM_Object)MeM_Request(sizeof(struct PWM_TypeDef));
+    newPWMObj->TIM_Periph = TIM_Periph;
+    newPWMObj->TIM_Channel = TIM_Channel_x;
+    return newPWMObj;
 }
 
 /**
@@ -56,7 +60,7 @@ PWM_ObjectPWM_Initialize(TIM_Object TIM_Periph, uint8_t TIM_Channel_x,GPIO_Objec
  * @param duty 占空比系数
  */
 void PWM_SetDuty(PWM_Object PWM, uint16_t duty){
-    uint16_t *TIM_CCRx;
+    volatile uint16_t *TIM_CCRx;
     switch(PWM->TIM_Channel){
         case TIM_Channel_1:{
             TIM_CCRx = &PWM->TIM_Periph->TIMx->CCR1;
@@ -72,7 +76,7 @@ void PWM_SetDuty(PWM_Object PWM, uint16_t duty){
         } break;
         default:{
             return;
-        }break;
+        }
     }
     PWM->duty = duty;
     uint16_t compareVal = TIM_GetReloadValue(PWM->TIM_Periph) * duty / UINT16_MAX;
@@ -124,8 +128,8 @@ uint16_t PWM_GetActualDuty(PWM_Object PWM){
             compareVal = PWM->TIM_Periph->TIMx->CCR4;
         } break;
         default:{
-            return;
-        }break;
+            return 0;
+        }
     }
     uint16_t reloadVal = TIM_GetReloadValue(PWM->TIM_Periph);
     return UINT16_MAX * compareVal / reloadVal;

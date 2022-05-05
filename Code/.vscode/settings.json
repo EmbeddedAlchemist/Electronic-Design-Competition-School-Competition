@@ -3,6 +3,10 @@
         "pwm.h": "c",
         "stm32f10x.h": "c",
         "gpio.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "stm32f10x_externlib.h": "c",
+        "stm32f10x_externlib_42steppermotor.h": "c",
+        "stm32f10x_externlib_timer.h": "c",
+        "math.h": "c"
     }
 }

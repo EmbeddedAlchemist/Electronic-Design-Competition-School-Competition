@@ -1,7 +1,12 @@
 #ifndef _MEMORY_MANAGE_H_
 #define _MEMORY_MANAGE_H_
 
+#include "STM32F10x_ExternLib.h"
+
+#ifndef NULL
 #define NULL ((void *)0)
+#endif
+
 
 //受MemoryManage管理的内存大小，建议是32的整数倍
 #define MeM_MEMORY_POOL_SIZE 8192
